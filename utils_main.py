@@ -117,6 +117,7 @@ def read_okpd_dict_fr_link(
         # display(okpd2_df.head(2))
     except Exception as err:
         logger.error(str(err))
+        okpd2_df = pd.DataFrame()
     return okpd2_df
 from openpyxl import load_workbook
 from openpyxl.worksheet import merge
