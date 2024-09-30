@@ -8,7 +8,7 @@ import xlrd
 import json
 import itertools
 import requests
-from urllib.parse import urlencode
+# from urllib.parse import urlencode
 #from urllib.request import urlopen
 #import requests, xmltodict
 import time, datetime
@@ -36,7 +36,7 @@ from openpyxl.utils import units
 from openpyxl.styles import Border, Side, PatternFill, GradientFill, Alignment
 from openpyxl import drawing
 
-from matplotlib.colors import ListedColormap, BoundaryNorm
+# from matplotlib.colors import ListedColormap, BoundaryNorm
 
 
 class Logger():
