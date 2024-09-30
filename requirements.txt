@@ -1,4 +1,6 @@
 #xlrd
+logging
+requests
 pyxlsb
 openpyxl
 #py7zr

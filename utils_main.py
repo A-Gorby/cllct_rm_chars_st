@@ -101,14 +101,18 @@ def read_okpd_dict(
         logger.error(str(err))
     return okpd2_df
 
+import requests
 def read_okpd_dictfr_link(
         link = 'https://github.com/A-Gorby/cllct_rm_chars_st/blob/3949d889e587014b9da8b30b91d6cc8e190474a4/data/20240624_%D0%9E%D0%9A%D0%9F%D0%942_2024_09_13_1519.xlsx',
-    # supp_dict_dir = '/content/cllct_rm_chars/data',
     fn = '20240624_ОКПД2_2024_09_13_1519.xlsx',
     sh_n = 'ОКПД2',
 ):
     try:
-        okpd2_df = pd.read_excel(link, sheet_name=sh_n)
+        r = requests.get(link)
+        open(fn, 'wb').write(r.content)
+        # okpd2_df = pd.read_excel(link, sheet_name=sh_n, engine='openpyxl')
+        okpd2_df = pd.read_excel(fn, sheet_name=sh_n, engine='openpyxl')
+        # okpd2_df = pd.read_excel(link, sheet_name=sh_n)
         logger.info(f"Справочник ОКПД2: (строк, колонок): {str(okpd2_df.shape)}")
         # display(okpd2_df.head(2))
     except Exception as err:
