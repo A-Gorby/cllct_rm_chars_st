@@ -43,7 +43,7 @@ from openpyxl.utils import units
 from openpyxl.styles import Border, Side, PatternFill, GradientFill, Alignment
 from openpyxl import drawing
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 # import seaborn as sns
 # %matplotlib inline
 # from matplotlib.colors import ListedColormap, BoundaryNorm
