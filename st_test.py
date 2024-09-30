@@ -21,7 +21,7 @@ for uploaded_file in uploaded_files:
     # st.write(bytes_data)
 
     try:
-          df = pd.read_excel(uploaded_file)
-           st.dataframe(df, use_container_width=True)
+        df = pd.read_excel(uploaded_file)
+        st.dataframe(df, use_container_width=True)
     except:      
-          df=pd.DataFrame()
+        df=pd.DataFrame()
