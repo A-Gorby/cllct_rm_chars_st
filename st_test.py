@@ -14,7 +14,7 @@ from utils_main import read_okpd_dict_fr_link
 # import streamlit as st
 # @st.cache_data
 okpd2_df = read_okpd_dict_fr_link()
-st.dataframe(okpd2_df[:5], use_container_width=True)
+st.dataframe(okpd2_df.head(2), use_container_width=True)
 # uploaded_files = st.file_uploader(
 #     "Choose a CSV file", accept_multiple_files=True
 # )
