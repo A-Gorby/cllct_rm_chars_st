@@ -112,11 +112,14 @@ def read_okpd_dict_fr_link(
 ):
     try:
         r = requests.get(link)
-        open('temp.xls', 'wb').write(r.content)
+        # open('temp.xls', 'wb').write(r.content)
+        open(fn, 'wb').write(r.content)
+        
         # okpd2_df = pd.read_excel(link, sheet_name=sh_n, engine='openpyxl')
-        okpd2_df = pd.read_excel('temp.xls', sheet_name=sh_n, engine='openpyxl')
+        # okpd2_df = pd.read_excel('temp.xls', sheet_name=sh_n, engine='openpyxl')
+        okpd2_df = pd.read_excel(fn, sheet_name=sh_n, engine='openpyxl')
         # okpd2_df = pd.read_excel(link, sheet_name=sh_n)
-        # logger.info(f"Справочник ОКПД2: (строк, колонок): {str(okpd2_df.shape)}")
+        logger.info(f"Справочник ОКПД2: (строк, колонок): {str(okpd2_df.shape)}")
         # display(okpd2_df.head(2))
     except Exception as err:
         logger.error(str(err))
