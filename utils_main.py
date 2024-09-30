@@ -103,7 +103,8 @@ def read_okpd_dict(
 
 import requests
 import streamlit as st
-@st.cache_data
+# @st.cache_data
+@st.cache_data(persist="disk")
 def read_okpd_dict_fr_link(
         link = 'https://github.com/A-Gorby/cllct_rm_chars_st/blob/3949d889e587014b9da8b30b91d6cc8e190474a4/data/20240624_%D0%9E%D0%9A%D0%9F%D0%942_2024_09_13_1519.xlsx',
     fn = '20240624_ОКПД2_2024_09_13_1519.xlsx',
