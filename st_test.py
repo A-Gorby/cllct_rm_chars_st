@@ -15,16 +15,17 @@ from utils_main import read_okpd_dict_fr_link
 # @st.cache_data
 okpd2_df = read_okpd_dict_fr_link()
 st.dataframe(okpd2_df.head(2)) #, use_container_width=True)
-# uploaded_files = st.file_uploader(
-#     "Choose a CSV file", accept_multiple_files=True
-# )
-# for uploaded_file in uploaded_files:
-#     # bytes_data = uploaded_file.read()
-#     # st.write("filename:", uploaded_file.name)
-#     # st.write(bytes_data)
 
-#     try:
-#         df = pd.read_excel(uploaded_file)
-#         st.dataframe(df, use_container_width=True)
-#     except:      
-#         df=pd.DataFrame()
+uploaded_files = st.file_uploader(
+    "Choose a CSV file", accept_multiple_files=True
+)
+for uploaded_file in uploaded_files:
+    # bytes_data = uploaded_file.read()
+    # st.write("filename:", uploaded_file.name)
+    # st.write(bytes_data)
+
+    try:
+        df = pd.read_excel(uploaded_file)
+        st.dataframe(df, use_container_width=True)
+    except:      
+        df=pd.DataFrame()
