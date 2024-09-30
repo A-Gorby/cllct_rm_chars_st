@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from utils_main import read_okpd_dictfr_link
+from utils_main import read_okpd_dict_fr_link
 
 # df = pd.DataFrame(
 #     [
