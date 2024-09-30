@@ -12,8 +12,8 @@ from utils_main import read_okpd_dict_fr_link
 
 # st.dataframe(df, use_container_width=True)
 
-okpd_df = read_okpd_dict_fr_link()
-st.dataframe(df[:5], use_container_width=True)
+okpd2_df = read_okpd_dict_fr_link()
+st.dataframe(okpd2_df[:5], use_container_width=True)
 # uploaded_files = st.file_uploader(
 #     "Choose a CSV file", accept_multiple_files=True
 # )
