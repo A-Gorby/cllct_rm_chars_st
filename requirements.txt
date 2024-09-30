@@ -8,3 +8,16 @@ xlsxwriter
 #python-docx
 pandas
 numpy
+
+humanize
+regex
+xlrd
+
+tqdm
+# import zipfile
+# import tarfile
+# # import py7zr
+# import argparse
+
+# import warnings
+# warnings.filterwarnings("ignore")
