@@ -20,9 +20,9 @@ from tqdm import tqdm
 tqdm.pandas()
 import pickle
 
-import duckdb
-# https://stackoverflow.com/questions/75352219/fix-unimplemented-casting-error-in-duckdb-insert
-duckdb.default_connection.execute("SET GLOBAL pandas_analyze_sample=100000")
+# import duckdb
+# # https://stackoverflow.com/questions/75352219/fix-unimplemented-casting-error-in-duckdb-insert
+# duckdb.default_connection.execute("SET GLOBAL pandas_analyze_sample=100000")
 # import pyarrow
 
 import logging
@@ -46,7 +46,7 @@ from openpyxl import drawing
 import matplotlib.pyplot as plt
 # import seaborn as sns
 # %matplotlib inline
-from matplotlib.colors import ListedColormap, BoundaryNorm
+# from matplotlib.colors import ListedColormap, BoundaryNorm
 
 class Logger():
     def __init__(self, name = 'main',

@@ -12,7 +12,7 @@ from utils_main import read_okpd_dictfr_link
 
 # st.dataframe(df, use_container_width=True)
 
-okpd_df = read_okpd_dictfr_link()
+okpd_df = read_okpd_dict_fr_link()
 st.dataframe(df[:5], use_container_width=True)
 # uploaded_files = st.file_uploader(
 #     "Choose a CSV file", accept_multiple_files=True
