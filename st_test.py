@@ -97,7 +97,7 @@ binary_contents = b'whatever'
 # if st.download_button('Download file', fn_zip):  # Defaults to 'application/octet-stream'
 
 with open(fn_zip, 'r') as f:
-    if st.download_button('Download Zip', f):  # Defaults to 'application/octet-stream'
+    if st.download_button('Download Zip', f, mime='application/octet-stream', file_name=fn_zip):  # Defaults to 'application/octet-stream'
 
 
         # You can also grab the return value of the button,
