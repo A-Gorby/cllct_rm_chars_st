@@ -47,7 +47,7 @@ else:
 
             ##     df_rm_source = read_data(data_tmp_dir, fn_source, sh_n_source, )
 
-            spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst(
+            spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst_st(
               fn=fn_proc_save,
               sh_n_spgz=sh_n_source,
               groupby_col='№п/п',
