@@ -224,7 +224,7 @@ def split_merged_cells_st(file_source, sh_n_spgz, save_suffix='_spliited', debug
         sys.exit(2)
 
     fn_proc_save = os.path.basename(file_source.name).split('.xlsx')[0] + save_suffix + '.xlsx'
-    st.write(fn_save)
+    st.write(fn_proc_save)
     wb.save(fn_proc_save)
     return fn_proc_save
 # fn_proc_save = split_merged_cells_st(file_source, sh_n_spgz, save_suffix='_spliited', debug=False)
