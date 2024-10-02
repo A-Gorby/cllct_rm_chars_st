@@ -26,12 +26,14 @@ uploaded_files = st.file_uploader(
     "Загрузите xlsx- файлы для обработки", accept_multiple_files=True
 )
 fn_lst = [fn.name for fn in  uploaded_files if fn.name.endswith('.xlsx')]
+fn_save_lst = []
 if len (fn_lst) == 0:
     st.write(f"В загруженных файлах не найдены .xlsx файлы")
     # st.write(f"Работа программы завершена")
     # st.write(f"Обновите страницу")
     # sys.exit(2)
 else:
+    fn_save_lst = []
     for uploaded_file in uploaded_files:
         # bytes_data = uploaded_file.read()
         # st.write("filename:", uploaded_file.name)
@@ -77,3 +79,29 @@ else:
                     okpd2_df,
                     debug=False
                 )
+            fn_save_lst.append (fn_save)
+
+            # ---
+# Binary files
+import zipfile
+
+fn_zip = "form_spgz.zip"
+with zipfile.ZipFile(fn_zip, "a") as zf:
+    for fn_save in fn_save_lst:
+        zf.write(fn_save)
+binary_contents = b'whatever'
+
+# Different ways to use the API
+
+# if st.download_button('Download file', fn_zip):  # Defaults to 'application/octet-stream'
+
+with open(fn_zip, 'b') as f:
+    if st.download_button('Download Zip', f):  # Defaults to 'application/octet-stream'
+
+
+        # You can also grab the return value of the button,
+        # just like with any other button.
+        st.write('Thanks for downloading!')
+
+    # if st.download_button(...):
+    #     st.write('Thanks for downloading!')
