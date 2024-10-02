@@ -16,7 +16,6 @@ xlrd
 
 tqdm
 
-zipfile
 # import tarfile
 # import argparse
 
