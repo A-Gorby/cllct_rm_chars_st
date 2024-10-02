@@ -224,7 +224,7 @@ def split_merged_cells_st(file_source, sh_n_spgz, save_suffix='_spliited', debug
         sys.exit(2)
 
     fn_proc_save = os.path.basename(file_source.name).split('.xlsx')[0] + save_suffix + '.xlsx'
-    st.write(fn_proc_save)
+    if debug: st.write(fn_proc_save)
     wb.save(fn_proc_save)
     return fn_proc_save
 # fn_proc_save = split_merged_cells_st(file_source, sh_n_spgz, save_suffix='_spliited', debug=False)
@@ -1434,7 +1434,7 @@ def main_03(
     st.dataframe(okpd2_df.head(2)) #, use_container_width=True)
 
     uploaded_files = st.file_uploader(
-        "Загрузите xlsx- файлы для обработки", accept_multiple_files=True
+        "Загрузите xlsx-файлы для обработки", accept_multiple_files=True
     )
     if uploaded_files:
         fn_lst = [fn.name for fn in  uploaded_files if fn.name.endswith('.xlsx')]
@@ -1488,6 +1488,7 @@ def main_03(
             for fn_save in fn_save_lst:
                 zf.write(fn_save)
                 # break
+            st.write("Список обработанных файлов, сохраненных в zip-архиве:")
             st.write(zf.namelist())
         
         with open(fn_zip, 'rb') as f:
