@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from utils_main import read_okpd_dict_fr_link
+import sys
 
 # df = pd.DataFrame(
 #     [
@@ -24,7 +25,7 @@ if len (fn_lst) == 0:
     st.write(f"В загруженных файлах не найдены .xlsx файлы")
     st.write(f"Работа программы завершена")
     st.write(f"Обновите страницу")
-    sys.exit(2)
+    # sys.exit(2)
 
 for uploaded_file in uploaded_files:
     # bytes_data = uploaded_file.read()
