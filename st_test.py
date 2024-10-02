@@ -97,7 +97,7 @@ with zipfile.ZipFile(fn_zip, "a") as zf:
 
 # if st.download_button('Download file', fn_zip):  # Defaults to 'application/octet-stream'
 
-with open(fn_zip, 'b') as f:
+with open(fn_zip, 'rb') as f:
     if st.download_button('Download Zip', f, mime='application/octet-stream', file_name=fn_zip):  # Defaults to 'application/octet-stream'
 
 
