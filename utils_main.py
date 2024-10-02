@@ -1499,6 +1499,7 @@ def main_03(
             st.write("Список обработанных файлов, сохраненных в zip-архиве:")
             st.write(zip_name_lst)
             
+            st.write("Для скачивания zip-архива с обработанными файламинажмите на клавишу 'Download Zip'")
             with open(fn_zip, 'rb') as f:
                 if st.download_button('Download Zip', f, mime='application/octet-stream', file_name=fn_zip):  # Defaults to 'application/octet-stream'
                     st.write('Работа программы завершена. Спасибо!')
