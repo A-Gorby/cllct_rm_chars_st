@@ -195,6 +195,40 @@ def split_merged_cells(fn_path, sh_n_spgz, save_dir, debug=False):
     return fn_proc_save
 # fn_proc_save = split_merged_cells(fn_path, sh_n_spgz, save_dir=save_dir, debug=False)
 
+def split_merged_cells_st(file_source, sh_n_spgz, save_suffix='_spliited', debug=False):
+    
+    wb = load_workbook(file_source, read_only=False)
+    min_row = 3
+    try:
+        ws = wb[sh_n_spgz]
+
+        if debug:
+            st.write(ws.merged_cells.ranges)
+        for merged_cells_range in  sorted(list(ws.merged_cells.ranges)):
+            if merged_cells_range.min_row <= min_row: continue
+            value = ws.cell(row=merged_cells_range.min_row, column=merged_cells_range.min_col).value
+            if debug:
+                st.write(merged_cells_range, value)
+            # ws.unmerge_cells(range_string = merged_cells_range)
+            ws.unmerge_cells(start_row=merged_cells_range.min_row, start_column=merged_cells_range.min_col, end_row=merged_cells_range.max_row, end_column=merged_cells_range.max_col)
+
+            for i_row in range(merged_cells_range.min_row, merged_cells_range.max_row + 1):
+                for i_col in range(merged_cells_range.min_col, merged_cells_range.max_col + 1):
+                    # ws.cell(row=i_row, column=i_col) = value
+                    # print(i_col, utils.cell.get_column_letter(i_col), i_row)
+                    # print(f"{utils.cell.get_column_letter(i_col)}{i_row}") #, ws[f"{l_col}{i_row}"])
+                    ws[f"{utils.cell.get_column_letter(i_col)}{i_row}"] = value
+    except Exception as err:
+        logger.error(str(err))
+        logger.error(f"Работа программы завершена")
+        sys.exit(2)
+
+    fn_proc_save = os.path.basename(file_source.name).split('.xlsx')[0] + save_suffix + '.xlsx'
+    st.write(fn_save)
+    wb.save(fn_proc_save)
+    return fn_proc_save
+# fn_proc_save = split_merged_cells_st(file_source, sh_n_spgz, save_suffix='_spliited', debug=False)
+
 def split_merged_cells_in_dir(data_source_dir, save_dir, debug=False):
     fn_lst = glob.glob(os.path.join(data_source_dir,'*.xlsx'))
     print(fn_lst)
