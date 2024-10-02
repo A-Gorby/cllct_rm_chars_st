@@ -97,13 +97,13 @@ with zipfile.ZipFile(fn_zip, "a") as zf:
 
 # if st.download_button('Download file', fn_zip):  # Defaults to 'application/octet-stream'
 
-# with open(fn_zip, 'r') as f:
-#     if st.download_button('Download Zip', f, mime='application/octet-stream', file_name=fn_zip):  # Defaults to 'application/octet-stream'
+with open(fn_zip, 'b') as f:
+    if st.download_button('Download Zip', f, mime='application/octet-stream', file_name=fn_zip):  # Defaults to 'application/octet-stream'
 
 
-#         # You can also grab the return value of the button,
-#         # just like with any other button.
-#         st.write('Thanks for downloading!')
+        # You can also grab the return value of the button,
+        # just like with any other button.
+        st.write('Thanks for downloading!')
 
 #     # if st.download_button(...):
 #     #     st.write('Thanks for downloading!')
