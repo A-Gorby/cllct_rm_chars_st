@@ -1,3 +1,5 @@
+import streamlit as st
+
 import pandas as pd
 pd.options.display.max_columns=200
 
@@ -6,11 +8,12 @@ import os, sys, glob
 import humanize
 import re
 import regex
-import xlrd
+# import xlrd
 
 import json
 import itertools
 #from urllib.request import urlopen
+import requests
 #import requests, xmltodict
 import time, datetime
 import math
@@ -27,9 +30,9 @@ import pickle
 
 import logging
 import zipfile
-import tarfile
+# import tarfile
 # import py7zr
-import argparse
+# import argparse
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -101,9 +104,6 @@ def read_okpd_dict(
         logger.error(str(err))
     return okpd2_df
 
-import requests
-import streamlit as st
-# @st.cache_data
 @st.cache_data(persist="disk")
 def read_okpd_dict_fr_link(
         link = 'https://github.com/A-Gorby/cllct_rm_chars_st/raw/refs/heads/main/data/20240624_ОКПД2_2024_09_13_1519.xlsx',
@@ -1427,52 +1427,73 @@ def main_02(
 
 def main_03(
     sh_n_source = 'СПГЗ',
-    # data_source_dir = '/content/data/source',
-    # data_processed_dir = '/content/data/processed',
-    # data_tmp_dir = '/content/data/tmp',
-    # source_code_dir = '/content/cllct_rm_chars',
-    # debug=False,
+    debug=False,
 ):
 
     okpd2_df = read_okpd_dict_fr_link()
+    st.dataframe(okpd2_df.head(2)) #, use_container_width=True)
 
-    # save_dir=os.path.join(data_source_dir, '!')
-    # if not os.path.exists(save_dir): os.mkdir(save_dir)
-    # if not os.path.exists(data_tmp_dir): os.mkdir(data_tmp_dir)
+    uploaded_files = st.file_uploader(
+        "Загрузите xlsx- файлы для обработки", accept_multiple_files=True
+    )
+    if uploaded_files:
+        fn_lst = [fn.name for fn in  uploaded_files if fn.name.endswith('.xlsx')]
+        fn_save_lst = []
+        if len (fn_lst) == 0:
+            st.write(f"В загруженных файлах не найдены .xlsx файлы")
+            # st.write(f"Работа программы завершена")
+            # st.write(f"Обновите страницу")
+            # sys.exit(2)
+        else:
+            fn_save_lst = []
+            for uploaded_file in uploaded_files:
+                if uploaded_file.name.endswith('.xlsx'):
+                    fn_proc_save = split_merged_cells_st(uploaded_file, sh_n_spgz=sh_n_source, save_suffix='_spliited', debug=False)
+                    
+                    spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst_st(
+                    fn=fn_proc_save,
+                    sh_n_spgz=sh_n_source,
+                    groupby_col='№п/п',
+                    unique_test_cols=['Наименование СПГЗ', 'Единица измерения', 'ОКПД 2', 'Позиция КТРУ'],
+                    significant_cols = [
+                        'Наименование характеристики', 'Единица измерения характеристики', 'Значение характеристики', 'Тип характеристики', 'Тип выбора значений характеристики заказчиком'],
+                    )
+                    if debug: 
+                        st.write(spgz_code_name)
+                        st.dataframe(spgz_characteristics_content_loc_df.head(2))
+                    
+                    
+                    kpgz_head, chars_of_chars_df = create_kpgz_data(
+                        spgz_characteristics_content_loc_df, debug = False)
+                    if debug: 
+                        st.write(kpgz_head)
+                        st.dataframe(chars_of_chars_df.head(2))
 
-    fn_lst = os.listdir(data_source_dir)
-    fn_lst = [fn for fn in  fn_lst if fn.endswith('.xlsx')]
-    if len (fn_lst) == 0:
-        # logger.error(f"В папке '{data_source_dir}' не найдены .xlsx файлы")
-        st.write(f"В загруженных файлах не найдены .xlsx файлы")
-    for fn_source in fn_lst:
-        fn_path = os.path.join(data_source_dir, fn_source)
-        fn_proc_save = split_merged_cells(fn_path, sh_n_spgz=sh_n_source, save_dir=data_tmp_dir, debug=False)
+                    fn_save = uploaded_file.name.split('.xlsx')[0] + '_upd.xlsx'
+                    write_head_kpgz_sheet_st(
+                            uploaded_file,
+                            fn_save,
+                            spgz_code_name,
+                            kpgz_head,
+                            chars_of_chars_df,
+                            okpd2_df,
+                            debug=False
+                        )
+                    fn_save_lst.append (fn_save)
 
-        df_rm_source = read_data(data_tmp_dir, fn_source, sh_n_source, )
 
-        spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst(
-          fn=os.path.join(data_tmp_dir, fn_source),
-          sh_n_spgz=sh_n_source,
-          groupby_col='№п/п',
-          unique_test_cols=['Наименование СПГЗ', 'Единица измерения', 'ОКПД 2', 'Позиция КТРУ'],
-          significant_cols = [
-              'Наименование характеристики', 'Единица измерения характеристики', 'Значение характеристики', 'Тип характеристики', 'Тип выбора значений характеристики заказчиком'],
-        )
-        if debug: print(spgz_code_name)
-        kpgz_head, chars_of_chars_df = create_kpgz_data(spgz_characteristics_content_loc_df, debug = False)
+        fn_zip = "form_spgz.zip"
+        with zipfile.ZipFile(fn_zip, "a") as zf:
+            fn_save_lst = list(set(fn_save_lst))
+            for fn_save in fn_save_lst:
+                zf.write(fn_save)
+                # break
+            st.write(zf.namelist())
+        
+        with open(fn_zip, 'rb') as f:
+            if st.download_button('Download Zip', f, mime='application/octet-stream', file_name=fn_zip):  # Defaults to 'application/octet-stream'
+                st.write('Работа программы завершена. Спасибо!')
 
-        fn_save = fn_source.split('.xlsx')[0] + '_upd.xlsx'
-        write_head_kpgz_sheet(
-            data_source_dir,
-            data_processed_dir,
-            fn_source,
-            fn_save,
-            spgz_code_name,
-            kpgz_head,
-            chars_of_chars_df,
-            okpd2_df,
-            debug=False
-        )
     return
 
+main_03()
