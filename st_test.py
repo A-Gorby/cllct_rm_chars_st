@@ -87,6 +87,7 @@ import zipfile
 
 fn_zip = "form_spgz.zip"
 with zipfile.ZipFile(fn_zip, "a") as zf:
+    fn_save_lst - list(set(fn_save_lst))
     for fn_save in fn_save_lst:
         zf.write(fn_save)
         # break
