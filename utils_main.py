@@ -1482,18 +1482,26 @@ def main_03(
                     fn_save_lst.append (fn_save)
 
 
-        fn_zip = "form_spgz.zip"
-        with zipfile.ZipFile(fn_zip, "a") as zf:
-            fn_save_lst = list(set(fn_save_lst))
-            for fn_save in fn_save_lst:
-                zf.write(fn_save)
-                # break
+        if len(fn_save_lst) > 0:
+            fn_zip = "form_spgz.zip"
+            with zipfile.ZipFile(fn_zip, "w") as zf:
+                fn_save_lst = list(set(fn_save_lst))
+                for fn_save in fn_save_lst:
+                    zf.write(fn_save)
+                    break
+                zip_name_lst = zf.namelist()
+            if len(fn_save_lst) > 1:
+                with zipfile.ZipFile(fn_zip, "a") as zf:
+                    fn_save_lst = list(set(fn_save_lst))
+                    for fn_save in fn_save_lst:
+                        zf.write(fn_save)
+                    zip_name_lst = zf.namelist()
             st.write("Список обработанных файлов, сохраненных в zip-архиве:")
-            st.write(zf.namelist())
-        
-        with open(fn_zip, 'rb') as f:
-            if st.download_button('Download Zip', f, mime='application/octet-stream', file_name=fn_zip):  # Defaults to 'application/octet-stream'
-                st.write('Работа программы завершена. Спасибо!')
+            st.write(zip_name_lst)
+            
+            with open(fn_zip, 'rb') as f:
+                if st.download_button('Download Zip', f, mime='application/octet-stream', file_name=fn_zip):  # Defaults to 'application/octet-stream'
+                    st.write('Работа программы завершена. Спасибо!')
 
     return
 
