@@ -86,11 +86,12 @@ else:
 import zipfile
 
 fn_zip = "form_spgz.zip"
-with zipfile.ZipFile(fn_zip, "w") as zf:
+with zipfile.ZipFile(fn_zip, "a") as zf:
     for fn_save in fn_save_lst:
         zf.write(fn_save)
-        break
-binary_contents = b'whatever'
+        # break
+    st.write(zf.namelist)
+# binary_contents = b'whatever'
 
 # Different ways to use the API
 
