@@ -23,8 +23,8 @@ uploaded_files = st.file_uploader(
 fn_lst = [fn.name for fn in  uploaded_files if fn.name.endswith('.xlsx')]
 if len (fn_lst) == 0:
     st.write(f"В загруженных файлах не найдены .xlsx файлы")
-    st.write(f"Работа программы завершена")
-    st.write(f"Обновите страницу")
+    # st.write(f"Работа программы завершена")
+    # st.write(f"Обновите страницу")
     # sys.exit(2)
 
 for uploaded_file in uploaded_files:
