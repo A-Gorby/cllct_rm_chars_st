@@ -32,15 +32,15 @@ else:
         # bytes_data = uploaded_file.read()
         # st.write("filename:", uploaded_file.name)
         # st.write(bytes_data)
-        if uploaded_file.name.endswith('.xlsx')
-        try:
-            df = pd.read_excel(uploaded_file)
-            st.dataframe(df, use_container_width=True)
-        except:      
-            df=pd.DataFrame()
+        if uploaded_file.name.endswith('.xlsx'):
+            try:
+                df = pd.read_excel(uploaded_file)
+                st.dataframe(df, use_container_width=True)
+            except:      
+                df=pd.DataFrame()
 
-        # fn_proc_save = split_merged_cells(fn_path, sh_n_spgz=sh_n_source, save_dir=data_tmp_dir, debug=False)
-        fn_proc_save = split_merged_cells_st(uploaded_file, sh_n_spgz=sh_n_source, save_suffix='_spliited', debug=False)
+            # fn_proc_save = split_merged_cells(fn_path, sh_n_spgz=sh_n_source, save_dir=data_tmp_dir, debug=False)
+            fn_proc_save = split_merged_cells_st(uploaded_file, sh_n_spgz=sh_n_source, save_suffix='_spliited', debug=False)
 
         #     df_rm_source = read_data(data_tmp_dir, fn_source, sh_n_source, )
 
