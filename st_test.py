@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from utils_main import read_okpd_dict_fr_link, split_merged_cells_st, extract_spgz_df_lst_st
+from utils_main import read_okpd_dict_fr_link, split_merged_cells_st, extract_spgz_df_lst_st, write_head_kpgz_sheet_st
 from utils_main import create_kpgz_data
 import sys
 
@@ -67,15 +67,13 @@ else:
                 st.write(kpgz_head)
                 st.dataframe(chars_of_chars_df.head(2))
 
-        #     fn_save = fn_source.split('.xlsx')[0] + '_upd.xlsx'
-        #     write_head_kpgz_sheet(
-        #         data_source_dir,
-        #         data_processed_dir,
-        #         fn_source,
-        #         fn_save,
-        #         spgz_code_name,
-        #         kpgz_head,
-        #         chars_of_chars_df,
-        #         okpd2_df,
-        #         debug=False
-        #     )
+            fn_save = uploaded_file.name.split('.xlsx')[0] + '_upd.xlsx'
+            write_head_kpgz_sheet_st(
+                    uploaded_file,
+                    fn_save,
+                    spgz_code_name,
+                    kpgz_head,
+                    chars_of_chars_df,
+                    okpd2_df,
+                    debug=False
+                )
