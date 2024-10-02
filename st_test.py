@@ -55,7 +55,9 @@ else:
               significant_cols = [
                   'Наименование характеристики', 'Единица измерения характеристики', 'Значение характеристики', 'Тип характеристики', 'Тип выбора значений характеристики заказчиком'],
             )
-            if debug: st.write(spgz_code_name)
+            if debug: 
+                st.write(spgz_code_name)
+                st.dataframe(df.spgz_characteristics_content_loc_df.head(2))
             #     kpgz_head, chars_of_chars_df = create_kpgz_data(spgz_characteristics_content_loc_df, debug = False)
 
         #     fn_save = fn_source.split('.xlsx')[0] + '_upd.xlsx'
