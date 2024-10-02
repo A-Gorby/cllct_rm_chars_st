@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from utils_main import read_okpd_dict_fr_link, split_merged_cells_st, extract_spgz_df_lst_st
+from utils_main import create_kpgz_data
 import sys
 
 # df = pd.DataFrame(
@@ -58,7 +59,13 @@ else:
             if debug: 
                 st.write(spgz_code_name)
                 st.dataframe(spgz_characteristics_content_loc_df.head(2))
-            #     kpgz_head, chars_of_chars_df = create_kpgz_data(spgz_characteristics_content_loc_df, debug = False)
+            
+            
+            kpgz_head, chars_of_chars_df = create_kpgz_data(
+                spgz_characteristics_content_loc_df, debug = False)
+            if debug: 
+                st.write(kpgz_head)
+                st.dataframe(chars_of_chars_df.head(2))
 
         #     fn_save = fn_source.split('.xlsx')[0] + '_upd.xlsx'
         #     write_head_kpgz_sheet(
