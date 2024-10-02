@@ -90,7 +90,7 @@ with zipfile.ZipFile(fn_zip, "a") as zf:
     for fn_save in fn_save_lst:
         zf.write(fn_save)
         # break
-    st.write(zf.namelist)
+    st.write(str(zf.namelist))
 # binary_contents = b'whatever'
 
 # Different ways to use the API
