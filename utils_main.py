@@ -1446,190 +1446,7 @@ def write_head_kpgz_sheet_st_v01(
 
     return
 
-def write_head_kpgz_sheet_st_v01(
-    data_source_dir,
-    data_processed_dir,
-    fn_source,
-    fn_save,
-    spgz_code_name,
-    kpgz_head,
-    chars_of_chars_df,
-    okpd2_df,
-    debug=False
- ):
-    """
-    v 01.02 21.10.2024
-    """
-    column_widths = [40,20,60,20,20,25,25,]
-    ft_bold = Font(bold = True, name='Times New Roman')
-    ft_norm = Font(bold = False, name='Times New Roman')
-    thin_border = Border(left=Side(style='thin'),
-                     right=Side(style='thin'),
-                     top=Side(style='thin'),
-                     bottom=Side(style='thin'))
-    # border = Border(left=Side(border_style=None,
-    #                       color='FF000000'),
-    #             right=Side(border_style=None,
-    #                        color='FF000000'),
-    #             top=Side(border_style=None,
-    #                      color='FF000000'),
-    #             bottom=Side(border_style=None,
-    #                         color='FF000000'),
-    #             diagonal=Side(border_style=None,
-    #                           color='FF000000'),
-    #             diagonal_direction=0,
-    #             outline=Side(border_style=None,
-    #                          color='FF000000')
-
-    wb = Workbook()
-    ws = wb.active
-    ws.title = 'КПГЗ'
-
-    ws['A1'] = 'Позиция КПГЗ ' + spgz_code_name
-    ws['A1'].font = ft_bold
-    ws['A1'].border = thin_border
-    ws['A1'].alignment = Alignment(wrap_text=True,vertical='top', horizontal='center')
-
-    ws['A2'] = 'Статус'
-    ws['A2'].font = ft_bold
-    ws['B2'] = 'Утверждена'
-    ws['A2'].border = thin_border
-    ws['B2'].border = thin_border
-    ws['B2'].font = ft_norm
-
-    ws['A3'] = 'ОКПД-2'
-    ws['A3'].font = ft_bold
-    # ws['B3'] = kpgz_head['ОКПД-2'][0]  #okpd2
-    ws['B3'] = get_total_okpd2_code_name(
-                kpgz_head,
-                okpd2_df,
-                debug=False)
-    ws['A3'].border = thin_border
-    ws['B3'].border = thin_border
-    ws['B3'].font = ft_norm
-
-    ws['A4'] = 'Позиция КТРУ'
-    ws['A4'].font = ft_bold
-    ws['A4'].border = thin_border
-    ws['B4'].border = thin_border
-    ws['B4'].font = ft_norm
-
-    ktru_lst, ktru_is_lst = get_total_ktru_code_name(kpgz_head)
-    ws['B4'] = ktru_lst
-    if ktru_is_lst and (type(ktru_lst)!=str):
-        ws['B4'].fill =  PatternFill('solid', fgColor='00C0C0C0')
-
-    ws['A5'] = 'Уровень детализации адреса'
-    ws['A5'].font = ft_bold
-    ws['B5'] = '-'
-    ws['A5'].border = thin_border
-    ws['B5'].border = thin_border
-    ws['B5'].font = ft_norm
-
-    ws['A6'] = 'Загружено из ЕМИАС'
-    ws['A6'].font = ft_bold
-    ws['B6'] = 'Нет'
-    ws['A6'].border = thin_border
-    ws['B6'].border = thin_border
-    ws['B6'].font = ft_norm
-
-    ws['A7'] = 'Характеристики (кол-во)'
-    ws['A7'].font = ft_bold
-    ws['B7'] = str(kpgz_head['Характеристики (кол-во)'])
-    ws['A7'].border = thin_border
-    ws['B7'].border = thin_border
-    ws['B7'].font = ft_norm
-
-    ws['A8'] = 'СПГЗ (кол-во)'
-    ws['A8'].font = ft_bold
-    # ws['B8'] = f"{kpgz_head['СПГЗ (кол-во)']} (СПГЗ/ИНП (кол-во) {kpgz_head['СПГЗ/ИНП (кол-во)']})"
-    ws['B8'] = f"{kpgz_head['СПГЗ/ИНП (кол-во)']}"
-    ws['A8'].border = thin_border
-    ws['B8'].border = thin_border
-    ws['B8'].font = ft_norm
-
-
-    ws['A10'] = 'Справочник характеристик и их значений позиции КПГЗ ' + spgz_code_name
-    ws['A10'].font = ft_bold
-    ws['A10'].border = thin_border
-    ws['B10'].border = thin_border
-    ws['A10'].alignment = Alignment(wrap_text=True,vertical='top', horizontal='center')
-
-    # ws.append([None])
-    ws.append(list(chars_of_chars_df.columns))
-    i_row = 11
-    for i in range(1, len(column_widths)+1):  # ,1 to start at 1
-        ws[get_column_letter(i) + f"{i_row}"].font = ft_bold
-        ws[get_column_letter(i) + f"{i_row}"].alignment = Alignment(wrap_text=True,vertical='top', horizontal='center')
-        ws[get_column_letter(i) + f"{i_row}"].border = thin_border
-
-    ws.append(list(range(1,len(chars_of_chars_df.columns) + 2)))
-    i_row = 12
-    for i in range(1, len(column_widths)+1):  # ,1 to start at 1
-        ws[get_column_letter(i) + f"{i_row}"].font = ft_bold
-        ws[get_column_letter(i) + f"{i_row}"].alignment = Alignment(wrap_text=True,vertical='top', horizontal='center')
-        ws[get_column_letter(i) + f"{i_row}"].border = thin_border
-
-    i_row = 13
-    # for row in chars_of_chars_df.iterrows():
-    for row in chars_of_chars_df.itertuples():
-        ws.append(list(row)[1:] )
-        for i in range(1, len(column_widths)+1):  # ,1 to start at 1
-            ws[get_column_letter(i) + f"{i_row}"].alignment = Alignment(wrap_text=True,vertical='top')
-            # if i < (len(column_widths)+2):
-            ws[get_column_letter(i) + f"{i_row}"].border = thin_border
-            ws[get_column_letter(i) + f"{i_row}"].font = ft_norm
-        i_row += 1
-
-    for i, column_width in enumerate(column_widths,1):  # ,1 to start at 1
-    # for i, column_width in enumerate(column_widths-1,1):  # ,1 to start at 1
-        ws.column_dimensions[get_column_letter(i)].width = column_width
-        ws.column_dimensions[get_column_letter(i)].font = Font(name='Times New Roman')
-        # ws.column.alignment = Alignment(wrap_text=True,vertical='top')
-        # ws.column_dimensions[get_column_letter(i)].alignment = Alignment(wrap_text=True,vertical='top')
-
-    ws.merge_cells('A10:G10')
-    ws.merge_cells('A1:G1')
-    ws.merge_cells('B2:G2')
-    ws.merge_cells('B3:G3')
-    ws.merge_cells('B4:G4')
-    ws.merge_cells('B5:G5')
-    ws.merge_cells('B6:G6')
-    ws.merge_cells('B7:G7')
-    ws.merge_cells('B8:G8')
-
-    ws_target = wb.create_sheet('СПГЗ')
-    # ws_target = wb_source.copy_worksheet(ws_source) # Не работает
-    # ws_target = ws_source.rows # Не работает
-
-    # wb.save(os.path.join(data_processed_dir, fn_save))
-
-    wb_source = load_workbook(filename=os.path.join(data_source_dir, fn_source)) #, read_only=False)
-    ws_source = wb_source['СПГЗ']
-
-    for i in range(1, ws_source.max_column + 1):
-        ws_target.column_dimensions[get_column_letter(i)].width = ws_source.column_dimensions[get_column_letter(i)].width
-    for row in ws_source.iter_rows():
-        # ws_target.append(row) # не работает
-        for cell in row:
-            ws_target[cell.coordinate ] = cell.value
-            ws_target[cell.coordinate ].alignment = copy(cell.alignment)
-            ws_target[cell.coordinate ].font = copy(cell.font)
-            ws_target[cell.coordinate ].border = copy(cell.border)
-
-    for merged_cells_range in sorted(ws_source.merged_cells.ranges):
-        start_col, start_row, end_col, end_row  = merged_cells_range.bounds
-        ws_target.merge_cells(start_row=start_row, start_column=start_col, end_row=end_row, end_column=end_col)
-
-    wb.save(os.path.join(data_processed_dir, fn_save))
-
-    logger.info(f"Файл '{fn_save}' - сохранен в папке '{data_processed_dir}'")
-
-    return
-
 def write_head_kpgz_sheet_st(
-    data_source_dir,
-    data_processed_dir,
     fn_source,
     fn_save,
     spgz_code_name,
@@ -1637,7 +1454,7 @@ def write_head_kpgz_sheet_st(
     chars_of_chars_df,
     okpd2_df,
     debug=False
- ):
+ )
     column_widths = [40,20,60,20,20,25,25,]
     ft_bold = Font(bold = True, name='Times New Roman')
     ft_norm = Font(bold = False, name='Times New Roman')
@@ -1789,7 +1606,8 @@ def write_head_kpgz_sheet_st(
 
     # wb.save(os.path.join(data_processed_dir, fn_save))
 
-    wb_source = load_workbook(filename=os.path.join(data_source_dir, fn_source)) #, read_only=False)
+    # wb_source = load_workbook(filename=os.path.join(data_source_dir, fn_source)) #, read_only=False)
+    wb_source = load_workbook(filename=fn_source) #, read_only=False)
     ws_source = wb_source['СПГЗ']
 
     for i in range(1, ws_source.max_column + 1):
@@ -1806,7 +1624,8 @@ def write_head_kpgz_sheet_st(
         start_col, start_row, end_col, end_row  = merged_cells_range.bounds
         ws_target.merge_cells(start_row=start_row, start_column=start_col, end_row=end_row, end_column=end_col)
 
-    wb.save(os.path.join(data_processed_dir, fn_save))
+    # wb.save(os.path.join(data_processed_dir, fn_save))
+    wb.save(fn_save)
 
     # logger.info(f"Файл '{fn_save}' - сохранен в папке '{data_processed_dir}'")
     st.write(f"Файл '{fn_save}' - сохранен в папке '{data_processed_dir}'")
