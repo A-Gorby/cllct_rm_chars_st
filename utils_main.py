@@ -1479,7 +1479,7 @@ def write_head_kpgz_sheet_st(
     wb = Workbook()
     ws = wb.active
     ws.title = 'КПГЗ'
-    st.write(f"write_head_kpgz_sheet_st: Заголовок начало записи")
+    
     ws['A1'] = 'Позиция КПГЗ ' + spgz_code_name
     ws['A1'].font = ft_bold
     ws['A1'].border = thin_border
@@ -1503,7 +1503,7 @@ def write_head_kpgz_sheet_st(
     ws['B3'].border = thin_border
     ws['B3'].font = ft_norm
 
-    st.write(f"write_head_kpgz_sheet_st: Заголовок: Записан ОКПД2")
+    
 
     try:
         ws['A4'] = 'Позиция КТРУ'
@@ -1516,7 +1516,7 @@ def write_head_kpgz_sheet_st(
         ws['B4'] = ktru_lst
         if ktru_is_lst and (type(ktru_lst)!=str):
             ws['B4'].fill =  PatternFill('solid', fgColor='00C0C0C0')
-        st.write(f"write_head_kpgz_sheet_st: Заголовок: Записан КТРУ")
+        
     except Exception as err:
         st.write(str(err))
 
@@ -1556,7 +1556,7 @@ def write_head_kpgz_sheet_st(
     ws['B10'].border = thin_border
     ws['A10'].alignment = Alignment(wrap_text=True,vertical='top', horizontal='center')
 
-    st.write(f"write_head_kpgz_sheet_st: Заголовок записан")
+    
     # ws.append([None])
     ws.append(list(chars_of_chars_df.columns))
     i_row = 11
@@ -1803,4 +1803,4 @@ def main_03_v01(
 
     return
 
-main_03(debug=True)
+main_03(debug=False)
