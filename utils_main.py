@@ -1080,6 +1080,7 @@ def create_kpgz_data(
     chars_of_chars_dict = {}
     for col in char_of_char_cols_lst:
         name_char_of_char_col = col
+        st.write(f"'{col}'")
         if col in spgz_df.columns:
 
             value_counts_cols_pair = [name_char_col, col]
@@ -1110,7 +1111,7 @@ def create_kpgz_data(
         else:
             # logger.error(f"Колонка '{name_char_of_char_col}' отсутствует в данных (Таблица)")
             st.write(f"Колонка '{name_char_of_char_col}' отсутствует в данных (Таблица)")
-            print(spgz_df.columns)
+            # print(spgz_df.columns)
             missing_columns.append(name_char_of_char_col)
             for key, value_dict in chars_of_chars_dict.items():
                 chars_of_chars_dict[key][name_char_of_char_col] = default_value_lst.get(name_char_of_char_col)
@@ -1800,7 +1801,8 @@ def write_head_kpgz_sheet_st(
 
     wb.save(os.path.join(data_processed_dir, fn_save))
 
-    logger.info(f"Файл '{fn_save}' - сохранен в папке '{data_processed_dir}'")
+    # logger.info(f"Файл '{fn_save}' - сохранен в папке '{data_processed_dir}'")
+    st.write(f"Файл '{fn_save}' - сохранен в папке '{data_processed_dir}'")
 
     return
 
