@@ -1831,7 +1831,7 @@ def main_03(
             for uploaded_file in uploaded_files:
                 if uploaded_file.name.endswith('.xlsx'):
                     fn_proc_save = split_merged_cells_st(uploaded_file, sh_n_spgz=sh_n_source, save_suffix='_spliited', debug=False)
-                    st.write(f"Обрбатывается файл '{ploaded_file.name}' ...")
+                    st.write(f"Обрбатывается файл '{uploaded_file.name}' ...")
                     spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst_st(
                     fn=fn_proc_save,
                     sh_n_spgz=sh_n_source,
