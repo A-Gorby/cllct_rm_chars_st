@@ -1080,7 +1080,7 @@ def create_kpgz_data(
     chars_of_chars_dict = {}
     for col in char_of_char_cols_lst:
         name_char_of_char_col = col
-        st.write(f"'{col}'")
+        # st.write(f"'{col}'")
         if col in spgz_df.columns:
 
             value_counts_cols_pair = [name_char_col, col]
@@ -1131,7 +1131,7 @@ def create_kpgz_data(
         pass
 
     # chars_of_chars_df.head()
-
+    st.write(f"create_kpgz_data: return kpgz_head, chars_of_chars_df")
     return kpgz_head, chars_of_chars_df
 
 def get_total_okpd2_code_name(
