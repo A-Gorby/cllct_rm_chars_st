@@ -99,7 +99,7 @@ def read_okpd_dict(
     try:
         okpd2_df = pd.read_excel(os.path.join(supp_dict_dir, fn), sheet_name=sh_n)
         logger.info(f"Справочник ОКПД2: (строк, колонок): {str(okpd2_df.shape)}")
-        display(okpd2_df.head(2))
+        # display(okpd2_df.head(2))
     except Exception as err:
         logger.error(str(err))
     return okpd2_df
@@ -331,7 +331,7 @@ def extract_kpgz_df_lst(fn, sh_n_kpgz, debug=False):
 
     return kpgz_code_name, kpgz_header_content_loc_df, kpgz_characteristics_content_loc_df
 
-def extract_spgz_df_lst(fn, sh_n_spgz, groupby_col='№п/п',
+def extract_spgz_df_lst_st(fn, sh_n_spgz, groupby_col='№п/п',
                         unique_test_cols=['Наименование СПГЗ', 'Единица измерения', 'ОКПД 2', 
                                           'Позиция КТРУ'
                                           # 'Код характеристики КТРУ'
@@ -749,9 +749,10 @@ def pivot_combine_kpgz_spgz_xlsx(fn_lst):
 
     for fn in fn_lst:
         print(fn)
-        kpgz_code_name, kpgz_header_content_loc_df, kpgz_characteristics_content_loc_df = extract_kpgz_df_lst(fn, sh_n_kpgz)
+        kpgz_code_name, kpgz_header_content_loc_df, kpgz_characteristics_content_loc_df = extract_kpgz_df_lst(fn, sh_n_kpgz='КПГЗ')
         # print("kpgz_code_name:", kpgz_code_name)
-        spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst(fn, sh_n_spgz)
+        # spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst(fn, sh_n_spgz='КПГЗ')
+        spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst_st(fn, sh_n_spgz='КПГЗ')
         print("kpgz_code_name:", kpgz_code_name, "spgz_code_name:", spgz_code_name)
         # col = 'Наименование СПГЗ'
         # display(spgz_characteristics_content_loc_df[spgz_characteristics_content_loc_df['Ошибка объединения ячеек\n' + col].notnull()])
@@ -1625,42 +1626,42 @@ def write_head_kpgz_sheet_st(
 
     return
 
-def main(
-    fn_source,
-    sh_n_source,
-    data_source_dir = '/content/data/source',
-    data_processed_dir = '/content/data/processed',
-    data_tmp_dir = '/content/data/tmp',
-    source_code_dir = '/content/cllct_rm_chars',
-    debug=False,
-):
+# def main(
+#     fn_source,
+#     sh_n_source,
+#     data_source_dir = '/content/data/source',
+#     data_processed_dir = '/content/data/processed',
+#     data_tmp_dir = '/content/data/tmp',
+#     source_code_dir = '/content/cllct_rm_chars',
+#     debug=False,
+# ):
 
-    # okpd2_df = read_okpd_dict()
+#     # okpd2_df = read_okpd_dict()
 
-    # save_dir=os.path.join(data_source_dir, '!')
-    # if not os.path.exists(save_dir): os.mkdir(save_dir)
-    # if not os.path.exists(data_tmp_dir): os.mkdir(data_tmp_dir)
+#     # save_dir=os.path.join(data_source_dir, '!')
+#     # if not os.path.exists(save_dir): os.mkdir(save_dir)
+#     # if not os.path.exists(data_tmp_dir): os.mkdir(data_tmp_dir)
 
-    if fn_source is None or sh_n_source is None:
-        # logger.error("Необходимо выбрать файл и лист Excel для обработки")
-        logger.error("Не указаны файл и лист Excel для обработки")
-        logger.error("Работа программы прекращена")
-        sys.exit(2)
-    # split_merged_cells_in_dir(data_source_dir, data_tmp_dir, debug=False)
-    fn_path = os.path.join(data_source_dir, fn_source)
-    fn_proc_save = split_merged_cells(fn_path, sh_n_spgz=sh_n_source, save_dir=data_tmp_dir, debug=False)
+#     if fn_source is None or sh_n_source is None:
+#         # logger.error("Необходимо выбрать файл и лист Excel для обработки")
+#         logger.error("Не указаны файл и лист Excel для обработки")
+#         logger.error("Работа программы прекращена")
+#         sys.exit(2)
+#     # split_merged_cells_in_dir(data_source_dir, data_tmp_dir, debug=False)
+#     fn_path = os.path.join(data_source_dir, fn_source)
+#     fn_proc_save = split_merged_cells(fn_path, sh_n_spgz=sh_n_source, save_dir=data_tmp_dir, debug=False)
 
-    df_rm_source = read_data(data_tmp_dir, fn_source, sh_n_source, )
+#     df_rm_source = read_data(data_tmp_dir, fn_source, sh_n_source, )
 
-    spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst(
-      fn=os.path.join(data_tmp_dir, fn_source),
-      sh_n_spgz=sh_n_source,
-      groupby_col='№п/п',
-      unique_test_cols=['Наименование СПГЗ', 'Единица измерения', 'ОКПД 2', 'Позиция КТРУ'],
-      significant_cols = [
-          'Наименование характеристики', 'Единица измерения характеристики', 'Значение характеристики', 'Тип характеристики', 'Тип выбора значений характеристики заказчиком'],
-    )
-    if debug: print(spgz_code_name)
+#     spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst(
+#       fn=os.path.join(data_tmp_dir, fn_source),
+#       sh_n_spgz=sh_n_source,
+#       groupby_col='№п/п',
+#       unique_test_cols=['Наименование СПГЗ', 'Единица измерения', 'ОКПД 2', 'Позиция КТРУ'],
+#       significant_cols = [
+#           'Наименование характеристики', 'Единица измерения характеристики', 'Значение характеристики', 'Тип характеристики', 'Тип выбора значений характеристики заказчиком'],
+#     )
+#     if debug: print(spgz_code_name)
 
 # def write_head_kpgz_sheet(
 #     data_source_dir,
@@ -1830,108 +1831,108 @@ def main(
 #     return
 
 
-def main(
-    fn_source,
-    sh_n_source,
-    data_source_dir = '/content/data/source',
-    data_processed_dir = '/content/data/processed',
-    data_tmp_dir = '/content/data/tmp',
-    source_code_dir = '/content/cllct_rm_chars',
-    debug=False,
-):
+# def main(
+#     fn_source,
+#     sh_n_source,
+#     data_source_dir = '/content/data/source',
+#     data_processed_dir = '/content/data/processed',
+#     data_tmp_dir = '/content/data/tmp',
+#     source_code_dir = '/content/cllct_rm_chars',
+#     debug=False,
+# ):
 
-    # okpd2_df = read_okpd_dict()
+#     # okpd2_df = read_okpd_dict()
 
-    # save_dir=os.path.join(data_source_dir, '!')
-    # if not os.path.exists(save_dir): os.mkdir(save_dir)
-    # if not os.path.exists(data_tmp_dir): os.mkdir(data_tmp_dir)
+#     # save_dir=os.path.join(data_source_dir, '!')
+#     # if not os.path.exists(save_dir): os.mkdir(save_dir)
+#     # if not os.path.exists(data_tmp_dir): os.mkdir(data_tmp_dir)
 
-    if fn_source is None or sh_n_source is None:
-        # logger.error("Необходимо выбрать файл и лист Excel для обработки")
-        logger.error("Не указаны файл и лист Excel для обработки")
-        logger.error("Работа программы прекращена")
-        sys.exit(2)
-    # split_merged_cells_in_dir(data_source_dir, data_tmp_dir, debug=False)
-    fn_path = os.path.join(data_source_dir, fn_source)
-    fn_proc_save = split_merged_cells(fn_path, sh_n_spgz=sh_n_source, save_dir=data_tmp_dir, debug=False)
+#     if fn_source is None or sh_n_source is None:
+#         # logger.error("Необходимо выбрать файл и лист Excel для обработки")
+#         logger.error("Не указаны файл и лист Excel для обработки")
+#         logger.error("Работа программы прекращена")
+#         sys.exit(2)
+#     # split_merged_cells_in_dir(data_source_dir, data_tmp_dir, debug=False)
+#     fn_path = os.path.join(data_source_dir, fn_source)
+#     fn_proc_save = split_merged_cells(fn_path, sh_n_spgz=sh_n_source, save_dir=data_tmp_dir, debug=False)
 
-    df_rm_source = read_data(data_tmp_dir, fn_source, sh_n_source, )
+#     df_rm_source = read_data(data_tmp_dir, fn_source, sh_n_source, )
 
-    spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst(
-      fn=os.path.join(data_tmp_dir, fn_source),
-      sh_n_spgz=sh_n_source,
-      groupby_col='№п/п',
-      unique_test_cols=['Наименование СПГЗ', 'Единица измерения', 'ОКПД 2', 'Позиция КТРУ'],
-      significant_cols = [
-          'Наименование характеристики', 'Единица измерения характеристики', 'Значение характеристики', 'Тип характеристики', 'Тип выбора значений характеристики заказчиком'],
-    )
-    if debug: print(spgz_code_name)
-    kpgz_head, chars_of_chars_df = create_kpgz_data(spgz_characteristics_content_loc_df, debug = False)
+#     spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst(
+#       fn=os.path.join(data_tmp_dir, fn_source),
+#       sh_n_spgz=sh_n_source,
+#       groupby_col='№п/п',
+#       unique_test_cols=['Наименование СПГЗ', 'Единица измерения', 'ОКПД 2', 'Позиция КТРУ'],
+#       significant_cols = [
+#           'Наименование характеристики', 'Единица измерения характеристики', 'Значение характеристики', 'Тип характеристики', 'Тип выбора значений характеристики заказчиком'],
+#     )
+#     if debug: print(spgz_code_name)
+#     kpgz_head, chars_of_chars_df = create_kpgz_data(spgz_characteristics_content_loc_df, debug = False)
 
-    fn_save = fn_source.split('.xlsx')[0] + '_upd.xlsx'
-    write_head_kpgz_sheet(
-        data_source_dir,
-        data_processed_dir,
-        fn_source,
-        fn_save,
-        spgz_code_name,
-        kpgz_head,
-        chars_of_chars_df,
-        okpd2_df,
-        debug=False
-    )
+#     fn_save = fn_source.split('.xlsx')[0] + '_upd.xlsx'
+#     write_head_kpgz_sheet(
+#         data_source_dir,
+#         data_processed_dir,
+#         fn_source,
+#         fn_save,
+#         spgz_code_name,
+#         kpgz_head,
+#         chars_of_chars_df,
+#         okpd2_df,
+#         debug=False
+#     )
 
-def main_02(
-    sh_n_source = 'СПГЗ',
-    data_source_dir = '/content/data/source',
-    data_processed_dir = '/content/data/processed',
-    data_tmp_dir = '/content/data/tmp',
-    source_code_dir = '/content/cllct_rm_chars',
-    debug=False,
-):
+# def main_02(
+#     sh_n_source = 'СПГЗ',
+#     data_source_dir = '/content/data/source',
+#     data_processed_dir = '/content/data/processed',
+#     data_tmp_dir = '/content/data/tmp',
+#     source_code_dir = '/content/cllct_rm_chars',
+#     debug=False,
+# ):
 
-    okpd2_df = read_okpd_dict()
+#     okpd2_df = read_okpd_dict()
 
-    # save_dir=os.path.join(data_source_dir, '!')
-    # if not os.path.exists(save_dir): os.mkdir(save_dir)
-    if not os.path.exists(data_tmp_dir): os.mkdir(data_tmp_dir)
+#     # save_dir=os.path.join(data_source_dir, '!')
+#     # if not os.path.exists(save_dir): os.mkdir(save_dir)
+#     if not os.path.exists(data_tmp_dir): os.mkdir(data_tmp_dir)
 
-    fn_lst = os.listdir(data_source_dir)
-    fn_lst = [fn for fn in  fn_lst if fn.endswith('.xlsx')]
-    if len (fn_lst) == 0:
-        logger.error(f"В папке '{data_source_dir}' не найдены .xlsx файлы")
-    for fn_source in fn_lst:
-        fn_path = os.path.join(data_source_dir, fn_source)
-        fn_proc_save = split_merged_cells(fn_path, sh_n_spgz=sh_n_source, save_dir=data_tmp_dir, debug=False)
+#     fn_lst = os.listdir(data_source_dir)
+#     fn_lst = [fn for fn in  fn_lst if fn.endswith('.xlsx')]
+#     if len (fn_lst) == 0:
+#         logger.error(f"В папке '{data_source_dir}' не найдены .xlsx файлы")
+#     for fn_source in fn_lst:
+#         fn_path = os.path.join(data_source_dir, fn_source)
+#         fn_proc_save = split_merged_cells(fn_path, sh_n_spgz=sh_n_source, save_dir=data_tmp_dir, debug=False)
 
-        df_rm_source = read_data(data_tmp_dir, fn_source, sh_n_source, )
+#         df_rm_source = read_data(data_tmp_dir, fn_source, sh_n_source, )
 
-        spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst(
-          fn=os.path.join(data_tmp_dir, fn_source),
-          sh_n_spgz=sh_n_source,
-          groupby_col='№п/п',
-          unique_test_cols=['Наименование СПГЗ', 'Единица измерения', 'ОКПД 2', 'Позиция КТРУ'],
-          significant_cols = [
-              'Наименование характеристики', 'Единица измерения характеристики', 'Значение характеристики', 'Тип характеристики', 'Тип выбора значений характеристики заказчиком'],
-        )
-        if debug: print(spgz_code_name)
-        kpgz_head, chars_of_chars_df = create_kpgz_data(spgz_characteristics_content_loc_df, debug = False)
+#         spgz_code_name, spgz_characteristics_content_loc_df = extract_spgz_df_lst(
+#           fn=os.path.join(data_tmp_dir, fn_source),
+#           sh_n_spgz=sh_n_source,
+#           groupby_col='№п/п',
+#           unique_test_cols=['Наименование СПГЗ', 'Единица измерения', 'ОКПД 2', 'Позиция КТРУ'],
+#           significant_cols = [
+#               'Наименование характеристики', 'Единица измерения характеристики', 'Значение характеристики', 'Тип характеристики', 'Тип выбора значений характеристики заказчиком'],
+#         )
+#         if debug: print(spgz_code_name)
+#         kpgz_head, chars_of_chars_df = create_kpgz_data(spgz_characteristics_content_loc_df, debug = False)
 
-        fn_save = fn_source.split('.xlsx')[0] + '_upd.xlsx'
-        write_head_kpgz_sheet(
-            data_source_dir,
-            data_processed_dir,
-            fn_source,
-            fn_save,
-            spgz_code_name,
-            kpgz_head,
-            chars_of_chars_df,
-            okpd2_df,
-            debug=False
-        )
-    return
+#         fn_save = fn_source.split('.xlsx')[0] + '_upd.xlsx'
+#         write_head_kpgz_sheet(
+#             data_source_dir,
+#             data_processed_dir,
+#             fn_source,
+#             fn_save,
+#             spgz_code_name,
+#             kpgz_head,
+#             chars_of_chars_df,
+#             okpd2_df,
+#             debug=False
+#         )
+#     return
 
-def main_03_v01(
+def main_03(
     sh_n_source = 'СПГЗ',
     debug=False,
 ):
@@ -1964,13 +1965,13 @@ def main_03_v01(
                     # significant_cols = [
                     #     'Наименование характеристики', 'Единица измерения характеристики', 'Значение характеристики', 'Тип характеристики', 'Тип выбора значений характеристики заказчиком'],
                     significant_cols = [
-              'Наименование характеристики', 'Единица измерения характеристики', 'Значение характеристики', 
-              'Тип характеристики', 
-              'Тип выбора значений характеристики заказчиком',
-              'Условная операция',
-              'Код КТРУ характеристики', # 'Код характеристики КТРУ',
+                        'Наименование характеристики', 'Единица измерения характеристики', 'Значение характеристики', 
+                        'Тип характеристики', 
+                        'Тип выбора значений характеристики заказчиком',
+                        'Условная операция',
+                        'Код КТРУ характеристики', # 'Код характеристики КТРУ',
 
-              ],
+                        ],
                     )
                     if debug: 
                         st.write(spgz_code_name)
