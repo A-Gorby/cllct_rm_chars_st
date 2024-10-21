@@ -1454,7 +1454,7 @@ def write_head_kpgz_sheet_st(
     chars_of_chars_df,
     okpd2_df,
     debug=False
- )
+ ):
     column_widths = [40,20,60,20,20,25,25,]
     ft_bold = Font(bold = True, name='Times New Roman')
     ft_norm = Font(bold = False, name='Times New Roman')
