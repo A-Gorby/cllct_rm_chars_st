@@ -1733,6 +1733,7 @@ def write_head_kpgz_sheet_st(
     ws['B10'].border = thin_border
     ws['A10'].alignment = Alignment(wrap_text=True,vertical='top', horizontal='center')
 
+    st.write(f"write_head_kpgz_sheet_st: Заголовок записан")
     # ws.append([None])
     ws.append(list(chars_of_chars_df.columns))
     i_row = 11
