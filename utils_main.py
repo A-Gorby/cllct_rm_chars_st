@@ -1662,7 +1662,7 @@ def write_head_kpgz_sheet_st(
     wb = Workbook()
     ws = wb.active
     ws.title = 'КПГЗ'
-
+    st.write(f"write_head_kpgz_sheet_st: Заголовок начало записи")
     ws['A1'] = 'Позиция КПГЗ ' + spgz_code_name
     ws['A1'].font = ft_bold
     ws['A1'].border = thin_border
@@ -1686,16 +1686,22 @@ def write_head_kpgz_sheet_st(
     ws['B3'].border = thin_border
     ws['B3'].font = ft_norm
 
-    ws['A4'] = 'Позиция КТРУ'
-    ws['A4'].font = ft_bold
-    ws['A4'].border = thin_border
-    ws['B4'].border = thin_border
-    ws['B4'].font = ft_norm
+    st.write(f"write_head_kpgz_sheet_st: Заголовок: Записан ОКПД2")
 
-    ktru_lst, ktru_is_lst = get_total_ktru_code_name(kpgz_head)
-    ws['B4'] = ktru_lst
-    if ktru_is_lst and (type(ktru_lst)!=str):
-        ws['B4'].fill =  PatternFill('solid', fgColor='00C0C0C0')
+    try:
+        ws['A4'] = 'Позиция КТРУ'
+        ws['A4'].font = ft_bold
+        ws['A4'].border = thin_border
+        ws['B4'].border = thin_border
+        ws['B4'].font = ft_norm
+
+        ktru_lst, ktru_is_lst = get_total_ktru_code_name(kpgz_head)
+        ws['B4'] = ktru_lst
+        if ktru_is_lst and (type(ktru_lst)!=str):
+            ws['B4'].fill =  PatternFill('solid', fgColor='00C0C0C0')
+        st.write(f"write_head_kpgz_sheet_st: Заголовок: Записан КТРУ")
+    except Exception as err:
+        st.write(str(err))
 
     ws['A5'] = 'Уровень детализации адреса'
     ws['A5'].font = ft_bold
