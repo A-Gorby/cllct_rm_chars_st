@@ -1628,7 +1628,7 @@ def write_head_kpgz_sheet_st(
     wb.save(fn_save)
 
     # logger.info(f"Файл '{fn_save}' - сохранен в папке '{data_processed_dir}'")
-    st.write(f"Файл '{fn_save}' - сохранен в папке '{data_processed_dir}'")
+    st.write(f"Файл '{fn_save}' - сохранен")
 
     return
 
